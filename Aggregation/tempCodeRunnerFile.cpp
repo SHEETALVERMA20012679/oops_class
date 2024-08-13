@@ -1,42 +1,37 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-class Address {
+class MyClass {
+private:
+    int privateVar;
+
 public:
-    string street_;
-    string city_;
-    string postalCode_;
+    MyClass(int val) {
+        privateVar = val;
+    }
+ 
+    // Declare a friend function
+    friend void friendFunction(MyClass& obj);
 
-    Address(string street, string city, string postalCode)
-        : street_(street), city_(city), postalCode_(postalCode) {}
-
-    void displayAddress() {
-        cout << "Street: " << street_ << ", City: " << city_ << ", Postal Code: " << postalCode_ << endl;
+    int getData(){
+        return privateVar;
     }
 };
 
-class Person {
-public:
-    string name_;
-    int age_;
-    Address address_;
-
-    Person(string name, int age, Address address)
-        : name_(name), age_(age), address_(address) {}
-
-    void displayInfo() {
-        cout << "Name: " << name_ << ", Age: " << age_ << endl;
-        cout << "Address: ";
-        address_.displayAddress();
-    }
-};
+// Define the friend function
+void friendFunction(MyClass& obj) {
+    // Access and modify the private member of MyClass
+    obj.privateVar += 10;
+}
 
 int main() {
-    Address personAddress("123 Main St", "Cityville", "12345");
-    Person person("John Doe", 30, personAddress);
+    MyClass obj(42);
 
-    person.displayInfo();
+    // Call the friend function to modify the private member
+    friendFunction(obj);
+
+    // Access the modified private member
+    cout << "Modified privateVar: " << obj.getData() << endl;
 
     return 0;
 }
